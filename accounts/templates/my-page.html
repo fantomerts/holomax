@@ -1,0 +1,208 @@
+{% extends 'base_generic.html' %}
+{% block title %}<title>HoloMAX | Профиль</title>{% endblock %}
+{% block content %}
+<main id="main">
+    <div id="bottom">
+        <div id="left">
+            {% if user.user_profile.avatar.url %}
+            <img src="{{user.user_profile.avatar.url}}" class="user-profile-avatar">
+            {% else %}
+            {% load static %}
+            <img src="{% static 'img/gentleman.svg' %}" class="default-profile-avatar">
+            {% endif %}
+            <form method="post" name="form-avatar" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{p_form.avatar}}
+                <label for="file" class="auth-button btn btn-success">Изменить аватар</label>
+                {% for field, errors in p_form.errors.items %}
+                {% for error in errors %}
+                    <div class="auth-error">{{error}}</div>
+                {% endfor %}
+                {% endfor %}
+            </form>
+        </div>
+        <div id="right">
+            <h1><strong class="username">{{ user.username }}</strong></h1>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Дата регистрации</strong></div>
+                <div class="parameter-value">{{ user.date_joined }}</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Почта</strong></div>
+                <div class="parameter-value">{{ user.email }}</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Номер карты</strong></div>
+                <div class="parameter-value">{{ bonuce_card.id }}</div> <!-- номер карты -->
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Бонусов</strong></div>
+                <div class="parameter-value">{{ bonuce_card.amount }}</div> <!-- количество бонусов -->
+            </div>
+            <form method="post" class="password-form">
+                {% csrf_token %}
+                <h1>Изменить пароль</h1>
+                <div class="input-div">
+                    <div><strong>Старый пароль</strong></div>
+                    <div class="user-input">{{form.old_password}}</div>
+                </div>
+                <div class="input-div">
+                    <div><strong>Новый пароль</strong></div>
+                    <div class="user-input">{{form.new_password1}}</div>
+                </div>
+                <div class="input-div">
+                    <div><strong>Снова новый пароль</strong></div>
+                    <div class="user-input">{{form.new_password2}}</div>
+                </div>
+                <input type="submit" class="auth-button btn btn-success" value="Изменить пароль" name="submit-password" />
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    {% if error == "This password is too short. It must contain at least 8 characters." %}
+                    <div class="auth-error">В пароле менее 8 символов</div>
+                    {% elif error == "This password is too common." %}
+                    <div class="auth-error">Пароль слишком простой</div>
+                    {% elif error == "This password is entirely numeric." %}
+                    <div class="auth-error">Пароль полностью состоит из цифр</div>
+                    {% elif error == "The two password fields didn’t match." %}
+                    <div class="auth-error">Пароли не совпадают</div>
+                    {% elif error == "Your old password was entered incorrectly. Please enter it again." %}
+                    <div class="auth-error">Старый пароль введен неверно</div>
+                    {% else %}
+                    <div class="auth-error">{{error}}</div>
+                    {% endif %}
+                {% endfor %}
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-12">
+            {% if booked_tickets %}
+            <div class="profile__title-table">
+                <h2>Забронированные билеты</h2>
+                <table class="table table-dark table-hover table-striped">
+                    <thead style="text-align: center;">
+                      <tr>
+                        <th>№</th>
+                        <th>Покупка</th>
+                        <th>Кинотеатр</th>
+                        <th>Фильм</th>
+                        <th>Время</th>
+                        <th>Зал</th>
+                        <th>Ряд-Место</th>
+                        <th>Цена</th>
+                        <th>QR-код</th>
+                      </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                      {% for ticket in booked_tickets %}
+                      <tr onclick="window.location.href='{% url 'ticket' ticket.ticket.pk %}'; return false" style="cursor: pointer;">
+                        <th scope="row">{{ticket.ticket.id}}</th>
+                        <td>{{ticket.ticket.get_buying_datetime}}</td>
+                        <td>{{ticket.ticket.seance.hall.theatre}}</td>
+                        <td>{{ticket.ticket.seance.movie}}</td>
+                        <td>{{ticket.ticket.seance.get_datetime}}</td>
+                        <td>{{ticket.ticket.seance.hall.number}}</td>
+                        <td>
+                            {% for place in ticket.ticket.place.all %}
+                            {{place.row.number}}-{{place.number}}{% if not forloop.last %}, {% endif %} <!-- нужно сделать покрасивее -->
+                            {% endfor %}
+                        </td>
+                        <td>{{ticket.ticket.get_full_price}} ₽</td>
+                        <td><img src="{{ticket.ticket.qr.url}}" alt="" class="qr"></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% if bought_tickets %}
+            <div class="profile__title-table">
+                <h2>Купленные билеты</h2>
+                <table class="table table-dark table-hover table-striped">
+                    <thead style="text-align: center;">
+                      <tr>
+                        <th>№</th>
+                        <th>Покупка</th>
+                        <th>Кинотеатр</th>
+                        <th>Фильм</th>
+                        <th>Время</th>
+                        <th>Зал</th>
+                        <th>Ряд-Место</th>
+                        <th>Баллов снято</th>
+                        <th>Баллов начислено</th>
+                        <th>Цена</th>
+                        <th>QR-код</th>
+                      </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                        {% for ticket in bought_tickets %}
+                        <tr onclick="window.location.href='{% url 'ticket' ticket.ticket.pk %}'; return false" style="cursor: pointer;">
+                          <th scope="row">{{ticket.ticket.id}}</th>
+                          <td>{{ticket.ticket.get_buying_datetime}}</td>
+                          <td>{{ticket.ticket.seance.hall.theatre}}</td>
+                          <td>{{ticket.ticket.seance.movie}}</td>
+                          <td>{{ticket.ticket.seance.get_datetime}}</td>
+                          <td>{{ticket.ticket.seance.hall.number}}</td>
+                          <td>
+                              {% for place in ticket.ticket.place.all %}
+                              {{place.row.number}}-{{place.number}}{% if not forloop.last %}, {% endif %} <!-- нужно сделать покрасивее -->
+                              {% endfor %}
+                          </td>
+                          <td>{{ticket.used_bonuses}}</td>
+                          <td>{{ticket.added_bonuses}}</td>
+                          <td>{{ticket.ticket.get_full_price}} ₽</td>
+                          <td><img src="{{ticket.ticket.qr.url}}" alt="" class="qr"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% if archive_tickets %}
+            <div class="profile__title-table">
+                <h2>Архив билетов</h2>
+                <table class="table table-dark table-hover table-striped">
+                    <thead style="text-align: center;">
+                      <tr>
+                        <th>№</th>
+                        <th>Покупка</th>
+                        <th>Кинотеатр</th>
+                        <th>Фильм</th>
+                        <th>Время</th>
+                        <th>Зал</th>
+                        <th>Ряд-Место</th>
+                        <th>Баллов снято</th>
+                        <th>Баллов начислено</th>
+                        <th>Цена</th>
+                        <th>QR-код</th>
+                      </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                        {% for ticket in archive_tickets %}
+                        <tr onclick="window.location.href='{% url 'ticket' ticket.ticket.pk %}'; return false" style="cursor: pointer;">
+                          <th scope="row">{{ticket.ticket.id}}</th>
+                          <td>{{ticket.ticket.get_buying_datetime}}</td>
+                          <td>{{ticket.ticket.seance.hall.theatre}}</td>
+                          <td>{{ticket.ticket.seance.movie}}</td>
+                          <td>{{ticket.ticket.seance.get_datetime}}</td>
+                          <td>{{ticket.ticket.seance.hall.number}}</td>
+                          <td>
+                              {% for place in ticket.ticket.place.all %}
+                              {{place.row.number}}-{{place.number}}{% if not forloop.last %}, {% endif %} <!-- нужно сделать покрасивее -->
+                              {% endfor %}
+                          </td>
+                          <td>{{ticket.used_bonuses}}</td>
+                          <td>{{ticket.added_bonuses}}</td>
+                          <td>{{ticket.ticket.get_full_price}} ₽</td>
+                          <td><img src="{{ticket.ticket.qr.url}}" alt="" class="qr"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock content %}

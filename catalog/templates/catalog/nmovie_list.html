@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+{% block title %}<title>HoloMAX | Фильмы</title>{% endblock %}
+{% block content %}
+{% if nmovie_list %}
+<div class="container">
+    <section class="movies-list">
+        {% for movie in nmovie_list %}
+        <div class="movies__poster-container">
+            <img src="{{movie.poster.url}}" alt="Постер" class="movies__poster">
+            <a href="{{ movie.get_absolute_url }}">
+                <div class="movies__poster-shadow">
+                    <div class="movies__title">{{movie.title}}</div>
+                    <div class="movies__info">
+                        <div class="movies__description">
+                            <p class="movies__release-year">Год выхода: {{movie.release.year}}</p>
+                            <p class="movies__country">Страна: {{movie.country.all.0}}</p>
+                            <p class="movies__genre">Жанр: {{movie.genre.all.0}}</p>
+                            <p class="movies__timing">Время: {{movie.duration}} мин.</p>
+                            <p class="movies__rating">Рейтинг: {{movie.rating}}</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </section>
+</div>
+{% else %}
+<section class="schedule">
+    <h2 class="schedule__title">К сожалению, фильмов и сеансов нет</h2>
+</section>
+{% endif %}
+{% endblock %}

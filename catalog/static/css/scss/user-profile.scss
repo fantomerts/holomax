@@ -1,0 +1,133 @@
+#main {
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+
+    margin-top: 30px;
+
+    a {
+        color: inherit;
+        text-decoration: none;
+        transition: 0.2s ease;
+
+        &:hover {
+            color: rgb(167, 167, 216);
+            transition: color 0.2s;
+        }
+    }
+
+    .subhead {
+        display: inline-block;
+        width: 150px;
+        color: rgb(197, 195, 195);
+        height: 100%;
+    }
+
+    h1 {
+        font-family: 'Cramaten'; 
+        font-size: 50px;
+        letter-spacing: 0.07em;
+        
+        margin-bottom: 30px;
+    }
+}
+
+#bottom {
+    display: flex;
+    justify-content: center;
+}
+
+#main #bottom .user-profile-avatar {
+    width: 250px;
+    height: 250px;
+    border-radius: 0.7rem;
+    box-shadow: 0 0 3px 0 white;
+}
+
+#main #bottom .default-profile-avatar {
+    background-color: rgb(167, 167, 167);
+    width: 250px;
+    height: 250px;
+    padding: 30px;
+    border-radius: 0.7rem;
+    box-shadow: 0 0 3px 0 white;
+}
+
+.parameter {
+    display: flex;
+    margin: 10px 0;
+
+    .parameter-title {
+        color: rgb(197, 195, 195);
+        width: 30%;
+    }
+
+    .parameter-value {
+        width: 70%;
+    }
+}
+
+#main #right p {
+    display: flex;
+}
+
+#left {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+
+#right {
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 60px;
+    width: 600px;
+}
+
+.password-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 3px black;
+
+    padding: 30px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.table {
+    vertical-align: middle;
+    thead {
+        tr {
+            padding: 10px 0;
+        }
+    }
+
+    .qr {
+        width: 80px;
+        background-color: white;
+    }
+
+    td {
+        vertical-align: middle;
+    }
+
+    th {
+        vertical-align: middle;
+    }
+}
+
+.profile__title-table {
+    margin-top: 50px;
+    h2 {
+        font-family: 'Cramaten'; 
+        font-size: 50px;
+        letter-spacing: 0.07em;
+        text-align: center;
+
+        margin-bottom: 10px;
+    }
+}

@@ -1,0 +1,45 @@
+{% extends "base_generic.html" %}
+{% block title %}<title>HoloMAX | О кинотеатре</title>{% endblock %}
+{% block content %}
+<div class="container">
+    <section class="about"> 
+        <section class="about__description about__section"> 
+            <h1 class="about__title">Добро пожаловать в HoloMAX</h1>
+            <div class="about__left-right">
+                <div class="about__left">
+                    <p>HoloMAX - это сеть кинотеатров города. Сеть названа так в честь кинотеатра будущего из фильма Назад в будущее 2 (1989). </p>
+                    <p>Адреса кинотеатров HoloMAX:</p>
+                    <ul class="list-unstyled">
+                        {% for theatre in theatres %}
+                        <li>{{theatre.address}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="about__right">
+                    {% load static %}
+                    <img src="{% static 'img/backtothefuture2.jpg' %}" alt="" class="about__back-to">
+                </div>
+            </div>
+        </section>
+        <section class="about__description about__section"> 
+            <h1 class="about__title">Залы кинотеатров</h1>
+            <div class="about__left-right">
+                <div class="about__left">
+                    {% load static %}
+                    <img src="{% static 'img/cinema.jpg' %}" alt="" class="about__back-to">
+                </div>
+                <div class="about__right">
+                    {% for theatre in theatres %}
+                    <p>{{theatre.address}}:</p>
+                    <ul class="list-unstyled">
+                        {% for hall in theatre.nhall_set.all %}
+                        <li>{% if hall.vip == True %}VIP-{% endif %}Зал {{hall.number}}, размер экрана - {{hall.screen_size}}, рядов - {{hall.nrow_set.all|length}}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </section>
+</div>
+{% endblock %}

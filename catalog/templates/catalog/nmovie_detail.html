@@ -1,0 +1,86 @@
+{% extends "base_generic.html" %}
+{% block title %}<title>HoloMAX | {{nmovie.title}}</title>{% endblock %}
+{% block content %}
+<main id="main" class="main-movie">
+    <div id="bottom">
+        <div id="left">
+            <img src="{{nmovie.poster.url}}" class="user-profile-avatar">
+            <div id="import-votes">
+                {% if nmovie.kp %}
+                    <a href='https://www.kinopoisk.ru/film/{{nmovie.kp}}/' target="_blank"><div style="background: url('https://rating.kinopoisk.ru/{{nmovie.kp}}.gif');" class="import-vote"></div></a>
+                {% endif %}
+                {% if nmovie.imdb %}
+                    <a href='https://www.imdb.com/title/tt{{nmovie.imdb}}/' target="_blank">
+                        <div class="import-vote" id="imdb-vote">
+                            <p id="imdb-title"><strong>IMDb</strong></p>
+                            <p id="imdb-score"></p>
+                        </div>
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                        <script>
+                            $.get("https://www.omdbapi.com/?i=tt{{nmovie.imdb}}&apikey=ba1f4581").then(function(rawdata){
+                                var rawstring =JSON.stringify(rawdata);
+                                var data =JSON.parse(rawstring);
+                                title = data.Title;
+                                rating = data.imdbRating;
+                                count = data.imdbVotes;
+                                var posterurl =data.Poster;
+                                document.getElementById('imdb-score').innerHTML='<strong>'+ rating + '</strong> (' + count + ')';
+                            })
+                        </script>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div id="right">
+            <h1><strong class="username">{{ nmovie.title }}</strong></h1>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Дата выхода</strong></div>
+                <div class="parameter-value">{{ nmovie.release }}</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Страна</strong></div>
+                <div class="parameter-value">
+                    {% for country in nmovie.country.all %}
+                    {{country}}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Жанр</strong></div>
+                <div class="parameter-value">
+                    {% for genre in nmovie.genre.all %}
+                    {{genre}}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Хронометраж</strong></div>
+                <div class="parameter-value">{{ nmovie.duration }} мин.</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Режиссер</strong></div>
+                <div class="parameter-value">{{ nmovie.director }}</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Актеры</strong></div>
+                <div class="parameter-value">{{ nmovie.actors }}</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Возрастной рейтинг</strong></div>
+                <div class="parameter-value">{{ nmovie.rating }}</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Начало проката</strong></div>
+                <div class="parameter-value">{{ nmovie.date_start }}</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-title"><strong>Конец проката</strong></div>
+                <div class="parameter-value">{{ nmovie.date_end }}</div>
+            </div>
+            {% if nmovie.summary %}
+            <p class="fact">{{ nmovie.summary }}</p>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}

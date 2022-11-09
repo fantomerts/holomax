@@ -1,0 +1,1086 @@
+@import url("../fonts/portia.otf");
+@import url("../fonts/cramaten.ttf");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap");
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after {
+  content: '';
+  content: none;
+}
+
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: 0.07em;
+  color: white;
+  background-color: #171717;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'Cramaten';
+  src: url(../fonts/cramaten.ttf);
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header {
+  font-family: Cramaten;
+  font-size: 36px;
+  letter-spacing: 0.07em;
+  background: #171717;
+  height: 140px;
+}
+
+.header .fa-chevron-down {
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  -webkit-transition: .3s;
+  transition: .3s;
+  margin-left: 10px;
+}
+
+.header .main__change-address:hover .fa-chevron-down {
+  -webkit-transform: translate(0px, -5px);
+          transform: translate(0px, -5px);
+}
+
+.header .navbar {
+  padding: 0;
+}
+
+.header .navbar__link, .header .header__current-user {
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.header .navbar__link:hover, .header .header__current-user:hover {
+  text-shadow: 4px 4px 4px rgba(255, 255, 255, 0.6);
+  -webkit-transition: text-shadow .3s;
+  transition: text-shadow .3s;
+}
+
+.header .header__profile .header__avatar {
+  padding: 15px;
+  background-color: #C4C4C4;
+  border-radius: 50%;
+}
+
+.header .header__profile .header__custom-avatar {
+  padding: 0;
+  width: 80px;
+  height: 80px;
+  border: 3px solid white;
+}
+
+.header .header__profile .header__sign-in, .header .header__profile .header__sign-out {
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.header .header__profile .header__sign-in:hover, .header .header__profile .header__sign-out:hover {
+  text-shadow: 4px 4px 4px rgba(255, 255, 255, 0.6);
+  -webkit-transform: translate(0px, -5px);
+          transform: translate(0px, -5px);
+}
+
+.header .header__profile .header__sign-in {
+  margin-left: 30px;
+}
+
+.header .header__profile .header__current-user {
+  max-width: 130px;
+  word-break: break-all;
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 30px;
+}
+
+.header .header__logo {
+  width: 100px;
+  margin-right: 20px;
+}
+
+.greeting {
+  height: 100vh;
+  background: #171717;
+}
+
+.logo .logo__logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: calc(100vh - 140px);
+}
+
+.logo .logo__logo .logo__circle {
+  height: 80%;
+  border-radius: 50%;
+  -webkit-box-shadow: 0px 0px 20px 5px rgba(192, 192, 192, 0.25);
+          box-shadow: 0px 0px 20px 5px rgba(192, 192, 192, 0.25);
+  z-index: 1;
+  margin-bottom: 5%;
+}
+
+.logo .logo__logo .logo__title {
+  position: absolute;
+  top: 62%;
+  height: 35%;
+  z-index: 3;
+}
+
+.movies .movies__top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: black;
+  height: 47px;
+  border-radius: 10px 10px 0 0;
+  padding: 0 52px;
+  overflow: hidden;
+}
+
+.movies .movies__carousel-container {
+  position: relative;
+  background-color: black;
+  padding: 0 52px;
+}
+
+.movies .movies__carousel-container .movies__move-left {
+  position: absolute;
+  left: 5px;
+}
+
+.movies .movies__carousel-container .movies__move-right {
+  position: absolute;
+  right: 5px;
+}
+
+.movies .movies__carousel-container .movies__move {
+  top: 40%;
+  font-size: 50px;
+  font-weight: 900;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.movies .movies__carousel-container .movies__move:hover {
+  -webkit-transform: translate(0px, -10px);
+          transform: translate(0px, -10px);
+}
+
+.movies .movies__carousel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: black;
+  overflow: hidden;
+}
+
+.movies .movies__bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: black;
+  height: 47px;
+  border-radius: 0px 0px 10px 10px;
+  -webkit-box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.65);
+          box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.65);
+  overflow: hidden;
+}
+
+.movies__poster-container {
+  position: relative;
+  width: 180px;
+  height: 270px;
+  overflow: hidden;
+}
+
+.movies__poster {
+  width: 180px;
+  border-radius: 5px;
+}
+
+.movies__poster-shadow {
+  position: absolute;
+  top: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+  -webkit-transition: 0.5s ease;
+  transition: 0.5s ease;
+  opacity: 0;
+  margin: 0;
+  padding: 20px;
+}
+
+.movies__poster-shadow:hover {
+  opacity: 1;
+}
+
+.movies__poster-shadow .movies__title {
+  height: 30%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.movies__poster-shadow .movies__info {
+  height: 70%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.movies__poster-shadow .movies__last-seance {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  text-align: center;
+}
+
+.movies__poster-shadow .movies__last-seance .movies__date {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.movies__poster-shadow .movies__last-seance .movies__seance-info {
+  display: inline-block;
+  text-align: center;
+  background-color: black;
+  border-radius: 5px;
+  padding: 6px 14px;
+}
+
+.movies__poster-shadow .movies__last-seance .movies__seance-time {
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.movies__poster-shadow .movies__last-seance .movies__seance-price {
+  font-weight: normal;
+  font-size: 9px;
+  color: #EBEBEB;
+  margin-top: 2px;
+}
+
+.movies__poster-shadow .movies__description {
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.schedule {
+  margin-top: 135px;
+}
+
+.schedule .schedule__title {
+  text-align: center;
+  font-family: Cramaten;
+  font-size: 72px;
+  line-height: 0px;
+  margin-bottom: 80px;
+}
+
+.schedule .seances__carousel-container {
+  position: relative;
+  padding: 0 50px;
+  margin-bottom: 100px;
+}
+
+.schedule .seances__move-left {
+  position: absolute;
+  left: 20px;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.schedule .seances__move-left:hover {
+  -webkit-transform: translate(-10px, 0px);
+          transform: translate(-10px, 0px);
+}
+
+.schedule .seances__move-right {
+  position: absolute;
+  right: 20px;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.schedule .seances__move-right:hover {
+  -webkit-transform: translate(10px, 0px);
+          transform: translate(10px, 0px);
+}
+
+.schedule .seances__move {
+  top: 30%;
+  font-size: 30px;
+}
+
+.schedule .schedule__seance {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 150px;
+  height: 70px;
+  border-radius: 20px;
+  -webkit-transition: .3s;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.schedule .schedule__seance .seance__day, .schedule .schedule__seance .seance__date {
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.schedule .schedule__seance .seance__day {
+  font-weight: bold;
+}
+
+.schedule .schedule__seance .seance__date {
+  margin-top: 10px;
+}
+
+.schedule .schedule__checkbox:checked + label {
+  background-color: #C6C6C6;
+  color: black;
+}
+
+.schedule .schedule__poster-container {
+  width: 255px;
+  height: 381px;
+  border: 1px solid #FFFFFF;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-left: 100px;
+}
+
+.schedule .schedule__poster {
+  width: 100%;
+}
+
+.schedule .schedule__movie-animation {
+  margin-bottom: 130px;
+}
+
+.schedule .schedule__movie .movie__title {
+  position: relative;
+  font-family: Cramaten;
+  font-size: 58px;
+  letter-spacing: 0.07em;
+}
+
+.schedule .schedule__movie .movie__title:after {
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  content: "";
+  -webkit-transition: width 0.3s ease-out;
+  transition: width 0.3s ease-out;
+  margin-top: -10px;
+}
+
+.schedule .schedule__movie a:hover:after {
+  width: 96%;
+}
+
+.schedule .schedule__movie .movie__description {
+  font-size: 14px;
+  line-height: 26px;
+  padding-top: 14px;
+}
+
+.schedule .schedule__movie .movie__rating {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid;
+}
+
+.schedule .schedule__movie .movie__rating span {
+  display: inline-block;
+  font-family: Cramaten;
+  font-size: 72px;
+  letter-spacing: 0.07em;
+  padding-left: 20px;
+  padding-top: 12px;
+}
+
+.schedule .schedule__movie .movie__seances {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 40px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-top: 70px;
+}
+
+.schedule .schedule__movie .movie__seances .movie__seance {
+  text-align: center;
+}
+
+.schedule .schedule__movie .movie__seances .movie__seance:hover .movie__seance-time {
+  text-shadow: 4px 4px 4px rgba(255, 255, 255, 0.6);
+  -webkit-transform: translate(0px, -10px);
+          transform: translate(0px, -10px);
+}
+
+.schedule .schedule__movie .movie__seances .movie__seance .movie__seance-time {
+  font-size: 40px;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.schedule .schedule__movie .movie__seances .movie__seance .movie__seance-price {
+  font-size: 18px;
+  color: #EBEBEB;
+}
+
+.schedule .schedule__movie .movie__seances .movie__seance-golden {
+  color: #FFC700;
+}
+
+.schedule .schedule__movie .movie__seances .movie__seance-golden .movie__seance-price {
+  color: #FFC700;
+}
+
+.schedule .schedule__movie .movie__seances .movie__seance-golden:hover .movie__seance-time {
+  text-shadow: 0px 0px 10px rgba(255, 199, 0, 0.6);
+  -webkit-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+}
+
+.footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background: -webkit-gradient(linear, left top, left bottom, from(#2D2D2D), color-stop(49.89%, rgba(39, 39, 39, 0.501073)), to(rgba(0, 0, 0, 0)));
+  background: linear-gradient(180deg, #2D2D2D 0%, rgba(39, 39, 39, 0.501073) 49.89%, rgba(0, 0, 0, 0) 100%);
+  padding: 90px 0;
+}
+
+.footer .footer__logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-right: 1px solid;
+  padding: 30px 150px;
+}
+
+.footer .footer__logo .footer__logo-img {
+  width: 200px;
+}
+
+.footer .footer__logo .footer__logo-title {
+  font-size: 40px;
+  margin-top: 10px;
+}
+
+.footer .footer__contacts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.footer .footer__contacts .footer__contact {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 33.3%;
+  border-right: 1px solid;
+}
+
+.footer .footer__contacts .footer__contact:last-child {
+  border: none;
+}
+
+.footer .footer__contacts .footer__contact:hover .footer__icon {
+  -webkit-transform: translate(0px, -10px);
+          transform: translate(0px, -10px);
+}
+
+.footer .footer__contacts .footer__contact .footer__icon {
+  font-weight: 900;
+  font-size: 96px;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.footer .footer__contacts .footer__contact .fa-phone {
+  -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+}
+
+.footer .footer__contacts .footer__contact .footer__action {
+  font-size: 40px;
+  margin-top: 20px;
+}
+
+.footer .footer__contacts .footer__contact .footer__data {
+  font-size: 20px;
+  color: #C6C6C6;
+  margin-top: 10px;
+}
+
+.dropdown {
+  z-index: 100;
+}
+
+.dropbtn {
+  color: white;
+  background-color: inherit;
+  letter-spacing: inherit;
+  padding: 16px;
+  border: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-content label {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.dropdown-content label:hover {
+  background-color: #5a5a5a;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.modal .header-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.modal .modal-poster {
+  height: 120px;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+
+.modal .modal-title {
+  font-size: 40px;
+  line-height: unset;
+}
+
+.modal .modal-undertitle {
+  margin-top: 5px;
+  color: #c9c7c7;
+}
+
+.modal .modal-content {
+  background-color: #0a0909;
+}
+
+.modal .modal-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #171717;
+}
+
+.modal .btn-close {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-item-align: start;
+      align-self: start;
+  -webkit-transition: .3s;
+  transition: .3s;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+.modal .btn-close span {
+  font-size: 60px;
+  color: white;
+}
+
+.modal .modal-footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.modal .modal-footer .btn {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+.modal .modal-footer__left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  gap: 100px;
+}
+
+.modal .modal-footer__left-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 10px;
+}
+
+.modal .modal-footer__left-right {
+  margin-top: 10px;
+  width: 400px;
+}
+
+.modal .parameter-title {
+  width: 150px !important;
+}
+
+.modal .parameter-value {
+  width: 250px !important;
+}
+
+.tickets-buying a {
+  text-decoration: underline;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.tickets-buying a:hover {
+  color: #a6a6fd;
+}
+
+.tickets-buying .value-range {
+  width: 50px !important;
+}
+
+.tickets-buying .seance-hall {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 900px;
+  border-radius: 15px;
+  background-color: #0a0a0a;
+}
+
+.tickets-buying .seance-hall .seance-hall__screen {
+  height: 15px;
+  width: 650px;
+  margin-top: 20px;
+  -webkit-box-shadow: 0 8px 10px #b6b6b6;
+          box-shadow: 0 8px 10px #b6b6b6;
+  background-color: #d8d8d8;
+}
+
+.tickets-buying .seance-hall .seance-hall__places {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 10px;
+  width: 650px;
+  height: 400px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.tickets-buying .seance-hall .seance-hall__row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 40px;
+}
+
+.tickets-buying .seance-hall .seance-hall__place {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: grey;
+  border-radius: 5px;
+  width: 40px;
+  height: 100%;
+  -webkit-transition: .3s;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.tickets-buying .seance-hall .seance-hall__place:hover {
+  background-color: white;
+}
+
+.tickets-buying .seance-hall .seance-hall__place div {
+  visibility: hidden;
+  font-size: 20px;
+}
+
+.tickets-buying .seance-hall .place-busy {
+  background-color: #fd4343;
+  cursor: unset;
+}
+
+.tickets-buying .seance-hall .place-busy:hover {
+  background-color: #fd4343;
+}
+
+.tickets-buying .seance-hall .place-vip {
+  border: 3px solid rgbs(255, 199, 0);
+  -webkit-box-shadow: 0px 0px 10px 2px #ffc700;
+          box-shadow: 0px 0px 10px 2px #ffc700;
+}
+
+.tickets-buying .seance-hall .ticket__checkbox:checked + .place-notbusy {
+  background-color: #1c911c;
+}
+
+.tickets-buying .seance-hall .ticket__checkbox:checked + .place-notbusy div {
+  visibility: visible;
+}
+
+.range {
+  height: 50px;
+  width: 300px;
+  background: black;
+  border-radius: 10px;
+  padding: 0 65px 0 45px;
+  -webkit-box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sliderValue {
+  position: relative;
+  width: 100%;
+}
+
+.sliderValue span {
+  position: absolute;
+  height: 45px;
+  width: 45px;
+  -webkit-transform: translateX(-70%) scale(0);
+          transform: translateX(-70%) scale(0);
+  font-weight: 500;
+  top: -40px;
+  line-height: 55px;
+  z-index: 2;
+  color: #fff;
+  -webkit-transform-origin: bottom;
+          transform-origin: bottom;
+  -webkit-transition: -webkit-transform 0.3s ease-in-out;
+  transition: -webkit-transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
+}
+
+.sliderValue span.show {
+  -webkit-transform: translateX(-70%) scale(1);
+          transform: translateX(-70%) scale(1);
+}
+
+.sliderValue span:after {
+  position: absolute;
+  content: '';
+  height: 100%;
+  width: 100%;
+  background: white;
+  border: 3px solid #fff;
+  z-index: -1;
+  left: 50%;
+  -webkit-transform: translateX(-50%) rotate(45deg);
+          transform: translateX(-50%) rotate(45deg);
+  border-bottom-left-radius: 50%;
+  -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+}
+
+.field {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+.field .value {
+  position: absolute;
+  font-size: 18px;
+  color: white;
+  font-weight: 600;
+}
+
+.field .value.left {
+  left: -22px;
+}
+
+.field .value.right {
+  right: -43px;
+}
+
+.range input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  z-index: 2222;
+}
+
+.range input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.range input::-moz-range-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.range input::-moz-range-progress {
+  background: white;
+}
+
+.footer-offer {
+  margin-top: 20px;
+}
+
+.moderator-panel-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.moderator-panel-button:hover {
+  -webkit-transform: translate(0px, -10px);
+          transform: translate(0px, -10px);
+}
+
+@media screen and (max-width: 1300px) {
+  body, body > * {
+    width: auto !important;
+    min-width: 1300px !important;
+  }
+}

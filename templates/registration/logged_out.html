@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+{% block title %}<title>HoloMAX | Выход</title>{% endblock %}
+{% block content %}
+<main class="main-auth">
+    <div class="auth-form">
+    <p>Пароль изменен!</p>
+
+    <p><a href="{% url 'login'%}">Нажмите</a>, чтобы войти снова</p>
+    </div>
+</main>
+{% endblock %}

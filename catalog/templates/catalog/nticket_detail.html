@@ -1,0 +1,108 @@
+{% extends "base_generic.html" %}
+{% block title %}<title>HoloMAX | Билет</title>{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user == nticket.nticketuseraddition_set.first.user or user.is_staff or user.is_superuser %}
+        <section class="ticket-container">
+            <div class="ticket">
+                <div class="ticket-form">
+                    <section class="ticket__logo">
+                        {% load static %}
+                        <img src="{% static 'img/big-logo.svg' %}" alt="">
+                        <span class="footer__logo-title">HoloMAX</span>
+                    </section>
+                    <section class="ticket__title">
+                        <span class="ticket__title-text">{{nticket.seance.movie.title}}</span>
+                    </section>
+                    <section class="ticket__footer">
+                        <section class="ticket__parameters">
+                            <div class="parameter">
+                                <div class="parameter-title"><strong>Дата и время</strong></div>
+                                <div class="parameter-value">{{nticket.seance.get_datetime}}</div>
+                            </div>
+                            <div class="parameter">
+                                <div class="parameter-title"><strong>Кинотеатр</strong></div>
+                                <div class="parameter-value">{{nticket.seance.hall.theatre.address}}</div>
+                            </div>
+                            <div class="parameter">
+                                <div class="parameter-title"><strong>Зал</strong></div>
+                                <div class="parameter-value">{{nticket.seance.hall.number}}</div>
+                            </div>
+                            <div class="parameter">
+                                <div class="parameter-title"><strong>Места</strong></div>
+                                <div class="parameter-value">
+                                    {% for place in nticket.place.all %}
+                                        {{place.row.number}}/{{place.number}}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="parameter">
+                                <div class="parameter-title"><strong>Оплачен</strong></div>
+                                <div class="parameter-value">{% if nticket.paid %}Да{% else %}Нет{% endif %}</div>
+                            </div>
+                        </section>
+                        <img src="{{nticket.qr.url}}" alt="">
+                    </section>
+                </div>
+                {% if nticket.seance.is_future %}
+                {% else %}
+                <div class="ticket__stripe">
+                    <div class="ticket__stripe-unit"></div>
+                    <div class="ticket__stripe-unit"></div>
+                    <div class="ticket__stripe-unit"></div>
+                    <div class="ticket__stripe-unit"></div>
+                    <div class="ticket__stripe-unit"></div>
+                    <div class="ticket__stripe-unit"></div>
+                    <div class="ticket__stripe-unit"></div>
+                    <div class="ticket__stripe-unit"></div>
+                    <div class="ticket__stripe-unit"></div>
+                </div>
+                {% endif %}
+                <div class="right-side">
+                    <div class="ticket__stripe">
+                        <div class="ticket__stripe-unit"></div>
+                        <div class="ticket__stripe-unit"></div>
+                        <div class="ticket__stripe-unit"></div>
+                        <div class="ticket__stripe-unit"></div>
+                        <div class="ticket__stripe-unit"></div>
+                        <div class="ticket__stripe-unit"></div>
+                        <div class="ticket__stripe-unit"></div>
+                        <div class="ticket__stripe-unit"></div>
+                        <div class="ticket__stripe-unit"></div>
+                    </div>
+                    <div class="ticket__control">
+                        <span class="ticket__control-text">Контроль</span>
+                    </div>
+                </div>
+                {% if nticket.seance.is_future %}
+                {% else %}
+                <style>
+                    .ticket {
+                        border-radius: 10px 0px 0px 10px !important;
+                        box-shadow: unset;
+                        overflow: unset;
+                    }
+                    .right-side {
+                        margin-left: 50px;
+                        transform: rotate(30deg);
+                    }
+                </style>      
+                {% endif %}
+            </div>
+        </section>
+    {% else %}
+        <main class="main-auth">
+            <div class="auth-form">
+                <p>К сожалению, это не ваш билет</p>
+            </div>
+        </main>
+    {% endif %}
+
+{% else %}
+<main class="main-auth">
+    <div class="auth-form">
+        <p>Билет отправлен на вашу почту!</p>
+    </div>
+</main>
+{% endif %}
+{% endblock %}

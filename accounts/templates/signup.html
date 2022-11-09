@@ -1,0 +1,66 @@
+{% extends 'base_generic.html' %}
+{% block title %}<title>HoloMAX | Регистрация</title>{% endblock %}
+{% block signup %}
+active
+{% endblock %}
+{% block content %}
+<main class="main-auth">
+<div class="auth-form">
+    <p class="auth-offer">Если у вас уже есть аккаунт, то просто <a href="{% url 'login'%}">войдите</a> в него</p>
+    <form method="post">
+    {% csrf_token %}
+    <div class="input-div">
+        <div><strong>Логин</strong></div>
+        <div class="user-input">{{ form.username }}</div>
+    </div>
+    <div class="input-div">
+        <div><strong>Email</strong></div>
+        <div class="user-input">{{ form.email }}</div>
+    </div>
+    <div class="input-div">
+      <div><strong>Пароль</strong></div>
+      <div class="user-input">{{ form.password1 }}</div>
+    </div>
+    <div class="input-div">
+      <div><strong>Подтверждение пароля</strong></div>
+      <div class="user-input">{{ form.password2 }}</div>
+    </div>
+    <div class="input-div">
+      <div><strong>Номер бонусной карты<br>(необязательно)</strong></div>
+      <div class="user-input">{{ b_reg_form.bonus_card }}</div>
+    </div>
+    <div class="button-div"><input type="submit" class="auth-button btn btn-success" value="Зарегистрироваться" /></div>
+    </form>
+    {% if form.errors %}
+      {% for field, errors in form.errors.items %}
+      {% for error in errors %}
+        {% if error == "This password is too short. It must contain at least 8 characters." %}
+        <div class="auth-error">В пароле менее 8 символов</div>
+        {% elif error == "This password is too common." %}
+        <div class="auth-error">Пароль слишком простой</div>
+        {% elif error == "This password is entirely numeric." %}
+        <div class="auth-error">Пароль полностью состоит из цифр</div>
+        {% elif error == "The two password fields didn’t match." %}
+        <div class="auth-error">Пароли не совпадают</div>
+        {% elif error == "The password is too similar to the username." %}
+        <div class="auth-error">Пароль похож на логин</div>
+        {% elif error == "A user with that username already exists." %}
+        <div class="auth-error">Этот логин уже занят</div>
+        {% elif error == "Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters." %}
+        <div class="auth-error">Введите корректный логин. Он может содержать только буквы, цифры и символы @/./+/-/_</div>
+        {% else %}
+        <div class="auth-error">{{error}}</div>
+        {% endif %}
+      {% endfor %}
+      {% endfor %}
+    {% endif %}
+    {% if b_reg_form.errors %}
+    {% for field, errors in b_reg_form.errors.items %}
+      {% for error in errors %}
+        <div class="auth-error">{{error}}</div>
+      {% endfor %}
+      {% endfor %}
+    {% endif %}
+</div>
+</main>
+{% endblock content %}

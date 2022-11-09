@@ -1,0 +1,383 @@
+{% extends "base_generic.html" %}
+{% block nav_address %}
+    <form class="main__change-address dropdown" method="post" id="form-address">
+        <button class="header__address dropbtn" disabled>{{chosen_theatre}}<span class="fas fa-chevron-down"></span></button>
+        <div class="dropdown-content">
+            {% for theatre in theatres %}
+            {% csrf_token %}
+            <input type="submit" id="{{theatre.id}}" name="choose-theatre{{theatre.id}}" hidden='true'>
+            <label for='{{theatre.id}}'>{{theatre}}</label>
+            {% endfor %}
+        </div>
+    </form>
+{% endblock %}
+{% block content %}
+{% load poll_extras %}
+<section class="greeting">
+    <section class="logo">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="logo__logo">
+                        {% load static %}
+                        <img src="{% static 'img/big-logo.svg' %}" alt="big logo" class="logo__circle">
+                        <img src="{% static 'img/logo-shadow.svg' %}" alt="title logo" class="logo__title">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</section>
+{% if movies %}
+<section class="movies">
+    <div class="movies__top">
+        {% load static %}
+        <img src="{% static 'img/squares.svg' %}" alt="" class="movies__film-squares">
+    </div>
+    <div class="movies__carousel-container">
+        <a href="" onclick="return false;" class="movies__move movies__move-left"><i class="fas fa-chevron-left"></i></a>
+        <a href="" onclick="return false;" class="movies__move movies__move-right"><i class="fas fa-chevron-right"></i></a>
+        <div class="owl-carousel owl-theme movies__carousel">
+            {% for movie in movies %}
+            <div class="movies__poster-container">
+                <img src="{{movie.poster.url}}" alt="Постер" class="movies__poster">
+                <a href="{{ movie.get_absolute_url }}">
+                    <div class="movies__poster-shadow">
+                        <div class="movies__title">{{movie.title}}</div>
+                        <div class="movies__info">
+                            <div class="movies__description">
+                                <p class="movies__release-year">Год выхода: {{movie.release.year}}</p>
+                                <p class="movies__country">Страна: {{movie.country.all.0}}</p>
+                                <p class="movies__genre">Жанр: {{movie.genre.all.0}}</p>
+                                <p class="movies__timing">Время: {{movie.duration}} мин.</p>
+                                <p class="movies__rating">Рейтинг: {{movie.rating}}</p>
+                            </div>
+                            <div class="movies__last-seance">
+                                {% with seance=movies_lastseances|get_item:movie %}
+                                <div class="movies__date">{% if seance.date|date:"d.m.y" == seance.get_today|date:"d.m.y" %}Сегодня{% else %}{{seance.date|date:"d.m"}}{% endif %}</div>
+                                <div class="movies__seance-info">
+                                    <div class="movies_seance-time">{{seance.get_time}}</div>
+                                    <div class="movies__seance-price">{{seance.get_price}} ₽</div> <!-- добавить последний сеанс -->
+                                {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- не знаю зачем он нужен <div class="movies__move movies__move-left"></div> -->
+    </div>
+    <div class="movies__bottom" id="schedule">
+        {% load static %}
+        <img src="{% static 'img/squares.svg' %}" alt="" class="movies__film-squares">
+    </div>
+</section>
+{% endif %}
+<section class="schedule">
+    {% if days %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2 class="schedule__title">Расписание сеансов</h2>
+                <div class="seances__carousel-container">
+                    <a href="" onclick="return false;" class="seances__move seances__move-left"><i class="fas fa-chevron-left"></i></a>
+                    <a href="" onclick="return false;" class="seances__move seances__move-right"><i class="fas fa-chevron-right"></i></a>
+                    <div class="owl-carousel owl-theme seances__carousel" method="POST">
+                        {% for day in days %}
+                        <div class="schedule__seance-container">
+                            <input type="radio" id="{{day.date}}" class="schedule__checkbox" name = "seances" hidden="true" value="{{day.date}}" {% if forloop.first %}checked{% endif %}>      
+                            <label class="schedule__seance" id="schedule__seance-first" for="{{day.date}}">
+                                <h3 class="seance__day">{{day.date|date:"l"}}</h3>
+                                <p class="seance__date">{{day.date|date:"d.m"}}</p>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>       
+        {% for day in days_movies_seances %}
+        {% if forloop.first %}
+        <div class="schedule__day {{day}}">
+        {% else %}
+        <div class="schedule__day {{day}}" hidden="true">
+        {% endif %}
+            {% for movie in days_movies_seances|get_item:day %}
+            <div class="row schedule__movie-animation">
+                <div class="col-lg-3">
+                    <div class="schedule__poster-container">    
+                        <img src="{{movie.poster.url}}" alt="" class="schedule__poster">
+                    </div>
+                </div>
+                <div class="col-lg-8 offset-lg-1">
+                    <div class="schedule__movie">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a href="{{ movie.get_absolute_url }}" class="movie__title">{{movie.title}}</a>
+                                <div class="movie__description">
+                                    <p class="movie__year-country">{{movie.release.year}}, {{movie.country.first}}</p>
+                                    <p class="movie__timing">{{movie.duration}} мин.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="movie__rating"><span>{{movie.rating}}</span></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="movie__seances">
+                                    {% for seance in days_movies_seances|get_item:day|get_item:movie %}
+                                    <a class="movie__seance {% if seance.hall.vip == True %}movie__seance-golden{% endif %}" href="#" data-bs-toggle="modal" data-bs-target="#seance{{seance.id}}">
+                                        <h2 class="movie__seance-time">{{seance.get_time}}</h2>
+                                        <p class="movie__seance-price">{{seance.get_price}} ₽</p>
+                                    </a>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="seance{{seance.id}}" tabindex="-1" aria-hidden="false">
+                                        <form class="tickets-buying modal-dialog modal-dialog-centered modal-xl" method="post" id="form-seance">
+                                            {% csrf_token %}
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <div class="header-title">
+                                                        <img src="{{seance.movie.poster.url}}" alt="" class="modal-poster">
+                                                        <div class="header-description">
+                                                            <h1 class="modal-title">{{seance.movie.title}}</h1>
+                                                            <h5 class="modal-undertitle">{{seance.hall.theatre.address}}, зал {{seance.hall.number}}, {{seance.get_datetime}}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true" class="white-text">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="seance-hall">
+                                                        <div class="seance-hall__screen"></div>
+                                                        <div class="seance-hall__places">
+                                                            {% for row in seance.hall.nrow_set.all %}
+                                                            <div class="seance-hall__row">                                      
+                                                                {% for place in row.nplace_set.all %}
+                                                                    {% if place in seances_places|get_item:seance %}
+                                                                        <input type="checkbox" id="{{seance.id}}place{{row.number}}/{{place.number}}" class="ticket__checkbox seance{{seance.id}}" name = "places" hidden="true" value="{{place.id}}">
+                                                                        <label class="seance-hall__place place-busy" for="{{seance.id}}place{{row.number}}/{{place.id}}"><div class="place-number">{{place.number}}</div></label>
+                                                                    {% elif place.vip == True %}
+                                                                        <input type="checkbox" id="{{seance.id}}place{{row.number}}/{{place.number}}place{{seance.get_price}}*{{place.get_coef}}" class="ticket__checkbox seance{{seance.id}}" name = "places" value="{{place.id}}" onclick="changePrice(this)" hidden="true">
+                                                                        <label class="seance-hall__place place-vip place-notbusy" for="{{seance.id}}place{{row.number}}/{{place.number}}place{{seance.get_price}}*{{place.get_coef}}"><div class="place-number">{{place.number}}</div></label>
+                                                                    {% else %}
+                                                                        <input type="checkbox" id="{{seance.id}}place{{row.number}}/{{place.number}}place{{seance.get_price}}" class="ticket__checkbox seance{{seance.id}}" name = "places" value="{{place.id}}" onclick="changePrice(this)" hidden="true">
+                                                                        <label class="seance-hall__place place-notbusy" for="{{seance.id}}place{{row.number}}/{{place.number}}place{{seance.get_price}}"><div class="place-number">{{place.number}}</div></label>
+                                                                    {% endif %}
+                                                                <!-- <input type="checkbox" id="seance{{seance.id}}place{{place.id}}" class="ticket__checkbox" name = "places" value={{place.id}} hidden="true"> -->
+                                                                <!-- <label class="seance-hall__place place-notbusy" for="seance{{seance.id}}place{{place.id}}"><div class="place-number">{{place.number}}</div></label> -->
+                                                                {% endfor %}
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="modal-footer__left">
+                                                        <div class="modal-footer__left-left">
+                                                            <div class="parameter">
+                                                                <div class="parameter-title"><strong>Выбранные<br>места</strong></div>
+                                                                <div class="parameter-value" id="places-box{{seance.id}}"></div>
+                                                            </div>
+                                                            <div class="parameter">
+                                                                <div class="parameter-title"><strong>Стоимость</strong></div>
+                                                                <div class="parameter-value" id="price-box{{seance.id}}">0 ₽</div>
+                                                            </div>
+                                                            {% if user.is_authenticated %}
+                                                            <div class="parameter">
+                                                                <div class="parameter-title"><strong>Баллов будет начислено</strong></div>
+                                                                <div class="parameter-value" id="bonuses-box{{seance.id}}">0</div>
+                                                            </div>
+                                                            {% endif %}
+                                                            <label for="checkbox-pay{{seance.id}}"><input type="checkbox" id="checkbox-pay{{seance.id}}" class="pay__checkbox" name="checkbox-pay" onclick="changeBonuses(this)" value={{seance.id}}> Оплатить сейчас</label>
+                                                        </div>
+                                                        <div class="modal-footer__left-right"> 
+                                                            {% if user.is_authenticated %}
+                                                            <div class="range" id="range{{seance.id}}" hidden="true">
+                                                                <div class="sliderValue">
+                                                                  <span id="span{{seance.id}}">100</span>
+                                                                </div>
+                                                                <div class="field">
+                                                                    <div class="value left">0</div>
+                                                                    <input type="range" min="0" max="{{bonus_card.amount}}" value="0" steps="1" id="input{{seance.id}}" name="bonuses" oninput="changeValue(this)">
+                                                                    <div class="value right" id="value{{seance.id}}">{{bonus_card.amount}}</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="parameter" id="bonuses-hide{{seance.id}}" hidden="true">
+                                                                <div class="parameter-title"><strong>Баллов будет списано</strong></div>
+                                                                <div class="parameter-value" id="footer-bonuses{{seance.id}}">0</div>
+                                                            </div>
+                                                            <div class="parameter" id="cardbonuses-hide{{seance.id}}" hidden="true">
+                                                                <div class="parameter-title"><strong>Баллов на карте</strong></div>
+                                                                <div class="parameter-value" id="card-bonuses">{{user.nbonuscard_set.first.amount}}</div>
+                                                            </div>
+                                                            <!-- <p class="footer-bonuses" id="footer-bonuses{{seance.id}}" hidden="true">Списать <input class="value-range" id="bonuses{{seance.id}}" type="text" name="bonuses" required> баллов из {{bonus_card.amount}}</p>  -->
+                                                            {% else %}
+                                                            <p class="footer-email" id="footer-email{{seance.id}}">Email <input class="value-email" id="email{{seance.id}}" type="email" required="true" name="value-email" placeholder="Введите адрес почты"></p> 
+                                                            <p class="footer-offer"><a href="{% url 'login'%}?next={{request.path}}">Войдите</a> или <a href="{% url 'signup'%}?next={{request.path}}">зарегистрируйтесь</a>, чтобы воспользоваться бонусной картой</p>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <input type="submit" class="btn btn-primary" id="button{{seance.id}}" value="Забронировать" name="submit-ticket{{seance.id}}">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <h2 class="schedule__title">К сожалению, фильмов и сеансов нет</h2>
+    {% endif %}
+</section>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        for (input of document.getElementsByClassName('value-range')) {
+            input.value=0;
+        }
+        $('input[type=radio]').change(function() {
+            className = document.querySelector('input[name="seances"]:checked').id;
+            hiddenElements = document.getElementsByClassName('schedule__day');
+            unhiddenElement = document.getElementsByClassName(className);
+            for (element of hiddenElements) {
+                element.hidden = true;
+            }
+            for (element of unhiddenElement) {          
+                element.hidden = false;
+            }
+        });
+
+    })
+    function changePrice(e) {
+        let price;
+        let sumPrice = 0;
+        let chosenPlaces = [];
+        let seance = e.id.split("place")[0];
+        let allPlaces = document.getElementsByClassName('seance' + seance);
+        let count = 0;
+        let priceBox = document.getElementById('price-box' + seance);
+        let placesBox = document.getElementById('places-box' + seance);
+        let checkBox = document.getElementById('checkbox-pay' + seance);
+        let bonusesBox = document.getElementById('bonuses-box' + seance);
+        let inputBox = document.getElementById('input' + seance);
+        for (place of allPlaces) {
+            if (place.checked) {
+                price = eval(place.id.split("place")[2].replace(',','.'));
+                sumPrice += price;
+                chosenPlaces.push(place.id.split('place')[1]);
+            }
+        }
+        if (checkBox.checked) {
+            if (bonusesBox) {
+                bonusesBox.innerHTML = ~~(sumPrice/10)
+            }
+        }
+        if (inputBox) {
+            let card_amount = '{{bonus_card.amount}}';
+            if (sumPrice < card_amount) {
+                inputBox.setAttribute('max', +sumPrice);
+                document.getElementById('value' + seance).innerHTML = sumPrice;
+            }
+            else {
+                inputBox.setAttribute('max', +card_amount);
+                document.getElementById('value' + seance).innerHTML = card_amount;
+            }
+            let i1=document.getElementById("footer-bonuses" + seance);
+            i1.innerHTML=inputBox.value;
+            sumPrice = +sumPrice - +inputBox.value 
+        }
+        priceBox.innerHTML = sumPrice.toString() + " ₽";
+        placesBox.innerHTML = chosenPlaces.join(", ");
+    }
+    function changeBonuses(e) {
+        let sumPrice = 0;
+        let chosenPlaces = [];
+        let seance = e.id.split('checkbox-pay')[1];
+        let bonusesBox = document.getElementById('bonuses-box' + seance);
+        let allPlaces = document.getElementsByClassName('seance' + seance);
+        let priceBox = document.getElementById('price-box' + seance);
+        let inputBox = document.getElementById('input' + seance);
+        for (place of allPlaces) {
+            if (place.checked) {
+                price = eval(place.id.split("place")[2].replace(',','.'));
+                sumPrice += price;
+                chosenPlaces.push(place.id.split('place')[1]);
+            }
+        }
+        if (e.checked) {
+            if(document.getElementById("footer-bonuses" + seance)) {  
+                document.getElementById("bonuses-hide" + seance).hidden = false;
+                document.getElementById("cardbonuses-hide" + seance).hidden = false;
+                document.getElementById("range" + seance).hidden = false;
+            }
+            document.getElementById("button" + seance).value = "Купить";
+            if (inputBox) {   
+                let card_amount = '{{bonus_card.amount}}';
+                if (sumPrice < card_amount) {
+                    inputBox.setAttribute('max', +sumPrice);
+                    document.getElementById('value' + seance).innerHTML = sumPrice;
+                }
+                else {
+                    inputBox.setAttribute('max', +card_amount);
+                    document.getElementById('value' + seance).innerHTML = card_amount;
+                }
+                sumPrice = +sumPrice - +inputBox.value;
+                priceBox.innerHTML = sumPrice.toString() + " ₽";
+            }
+            if (bonusesBox) {
+                bonusesBox.innerHTML = ~~(sumPrice/10)
+            }
+        }
+        else {
+            if(document.getElementById("footer-bonuses" + seance)) {  
+                document.getElementById("bonuses-hide" + seance).hidden = true;
+                document.getElementById("cardbonuses-hide" + seance).hidden = true;
+                document.getElementById("range" + seance).hidden = true;
+            }
+            document.getElementById("button" + seance).value = "Забронировать";
+            if (bonusesBox) {
+                bonusesBox.innerHTML = 0;
+            }
+            if (inputBox) {
+                priceBox.innerHTML = sumPrice.toString() + " ₽";
+            }
+        }
+    }
+    function changeValue(e) {
+        let seance = e.id.split('input')[1];
+        let i1=document.getElementById("footer-bonuses" + seance);
+        i1.innerHTML=e.value;
+
+        let allPlaces = document.getElementsByClassName('seance' + seance);
+        let sumPrice = 0;
+        let chosenPlaces = [];
+        let priceBox = document.getElementById('price-box' + seance);
+        let bonusesBox = document.getElementById('bonuses-box' + seance);
+        for (place of allPlaces) {
+            if (place.checked) {
+                price = eval(place.id.split("place")[2].replace(',','.'));
+                sumPrice += price;
+                chosenPlaces.push(place.id.split('place')[1]);
+            }
+        }
+        let nowPrice = +sumPrice - +e.value;
+        priceBox.innerHTML = nowPrice.toString() + " ₽";
+        bonusesBox.innerHTML = ~~(nowPrice/10);
+    }
+</script>
+{% endblock %}

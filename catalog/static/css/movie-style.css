@@ -1,0 +1,75 @@
+.main-movie .user-profile-avatar {
+  width: auto !important;
+  height: auto !important;
+}
+
+.main-movie .fact {
+  background-color: #0e0d0d;
+  padding: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  line-height: 25px;
+  border-radius: 10px;
+  -webkit-box-shadow: 5px 5px 3px black;
+          box-shadow: 5px 5px 3px black;
+}
+
+.main-movie #import-votes {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 20px 0;
+}
+
+.main-movie #import-votes a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.main-movie .import-vote {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 102px;
+  height: 38px;
+  border-radius: 5px;
+  -webkit-box-shadow: 3px 3px 4px black;
+          box-shadow: 3px 3px 4px black;
+}
+
+.main-movie #imdb-vote {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-color: #222222;
+  font-size: 11.5px;
+  padding: 5px 10px;
+}
+
+.main-movie #imdb-vote #imdb-title {
+  font-size: 13px !important;
+  font-style: bold;
+  color: yellow;
+  margin: 0;
+  padding: 0;
+}
+
+.main-movie #imdb-vote #imdb-score {
+  font-size: 10px;
+  margin: 0;
+  padding: 0;
+}

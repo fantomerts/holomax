@@ -1,0 +1,222 @@
+{% extends "base_generic.html" %}
+{% block title %}<title>HoloMAX | Панель работника</title>{% endblock %}
+{% block content %}
+<div class="container">
+    {% if booked_tickets %}
+    <div class="profile__title-table">
+        <h2>Забронированные билеты</h2>
+        <form method="post">
+          {% csrf_token %}
+          <table class="table table-dark table-hover table-striped booked-table">
+              <thead style="text-align: center;">
+                <tr>
+                  <th>№</th>
+                  <th>Пользователь (или Email)</th>
+                  <th>Покупка</th>
+                  <th>Кинотеатр</th>
+                  <th>Фильм</th>
+                  <th>Время</th>
+                  <th>Зал</th>
+                  <th>Ряд-Место</th>
+                  <th>Цена</th>
+                </tr>
+              </thead>
+              <tbody style="text-align: center;">
+                {% for ticket in booked_tickets %}
+                <tr onclick="document.getElementById('submit{{ticket.id}}').click();" style="cursor: pointer;">
+                  <th scope="row">{{ticket.id}}</th>
+                  {% if ticket.nticketuseraddition_set.first %}
+                  <td>{{ticket.nticketuseraddition_set.first.user.username}}</td>
+                  {% else %}
+                  <td>Гость ({{ticket.email}})</td>
+                  {% endif %}
+                  <td>{{ticket.get_buying_datetime}}</td>
+                  <td>{{ticket.seance.hall.theatre}}</td>
+                  <td>{{ticket.seance.movie}}</td>
+                  <td>{{ticket.seance.get_datetime}}</td>
+                  <td>{{ticket.seance.hall.number}}</td>
+                  <td>
+                      {% for place in ticket.place.all %}
+                      {{place.row.number}}-{{place.number}}{% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                  </td>
+                  <td>{{ticket.get_full_price}} ₽</td>
+                </tr>
+                <input type="submit" id="submit{{ticket.id}}" name  ="submit{{ticket.id}}" hidden="true">
+                {% endfor %}
+              </tbody>
+          </table>
+          <p>* нажмите на забронированный билет, чтобы превратить его в купленный билет</p>
+        </form>
+    </div>
+    {% endif %}
+    {% if bought_tickets %}
+    <div class="profile__title-table">
+        <h2>Купленные билеты</h2>
+        <table class="table table-dark table-hover table-striped booked-table">
+            <thead style="text-align: center;">
+              <tr>
+                <th>№</th>
+                <th>Пользователь (или Email)</th>
+                <th>Покупка</th>
+                <th>Кинотеатр</th>
+                <th>Фильм</th>
+                <th>Время</th>
+                <th>Зал</th>
+                <th>Ряд-Место</th>
+                <th>Цена</th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center;">
+              {% for ticket in bought_tickets %}
+              <tr onclick="window.location.href='{% url 'ticket' ticket.pk %}'; return false" style="cursor: pointer;">
+                <th scope="row">{{ticket.id}}</th>
+                {% if ticket.nticketuseraddition_set.first %}
+                <td>{{ticket.nticketuseraddition_set.first.user.username}}</td>
+                {% else %}
+                <td>Гость ({{ticket.email}})</td>
+                {% endif %}
+                <td>{{ticket.get_buying_datetime}}</td>
+                <td>{{ticket.seance.hall.theatre}}</td>
+                <td>{{ticket.seance.movie}}</td>
+                <td>{{ticket.seance.get_datetime}}</td>
+                <td>{{ticket.seance.hall.number}}</td>
+                <td>
+                    {% for place in ticket.place.all %}
+                    {{place.row.number}}-{{place.number}}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ticket.get_full_price}} ₽</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    {% if bonus_cards %}
+    <div class="profile__title-table">
+        <h2>Бонусные карты</h2>
+        <table class="table table-dark table-hover table-striped cards-table">
+            <thead style="text-align: center;">
+              <tr>
+                <th>№</th>
+                <th>Пользователь</th>
+                <th>Количество баллов</th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center;">
+              {% for card in bonus_cards %}
+              <tr>
+                <th scope="row">{{card.id}}</th>
+                {% if card.user %}
+                <td>{{card.user.username}}</td>
+                {% else %}
+                <td>—</td>
+                {% endif %}
+                <td>{{card.amount}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <form method="post" class="password-form card-form">
+      {% csrf_token %}
+      <h2>Добавить карту</h2>
+      <div class="input-div">
+          <div><strong>Количество бонусов</strong></div>
+          <div class="user-input">{{form.amount}}</div>
+      </div>
+      <input type="submit" class="auth-button btn btn-success" value="Добавить карту" name="submit-password" />
+      {% for field, errors in form.errors.items %}
+      {% for error in errors %}
+          <div class="auth-error">{{error}}</div>
+      {% endfor %}
+      {% endfor %}
+    </form>
+    {% endif %}
+    {% if user.is_superuser%}
+    {% if month_tickets %}
+    <div class="profile__title-table">
+      <h2>График проданных билетов</h2>
+      <canvas id="myChart"></canvas>
+    <script>
+      const labels = [
+        {% for month in month_tickets %}
+        '{{month}}',
+        {% endfor %}
+      ];
+
+      {% load poll_extras %}
+      const data = {
+        labels: labels,
+        datasets: [{
+          label: 'Доход',
+          backgroundColor: '#247ad6',
+          data: [
+            {% for month in month_tickets %}
+            {{ month_tickets|get_item:month}},
+            {% endfor %}
+          ],
+        }]
+      };
+    
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          plugins: {
+            legend: {
+              display: false,
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: 'transparent',
+                borderColor: 'white'
+              },
+              ticks: {
+                    color: 'white'
+              },
+              title: {
+                display: true,
+                text: 'Месяц',
+                color: 'white',
+                font: {
+                  size: 16,
+                }
+              }
+            },
+            y: {
+              grid: {
+                color: 'transparent',
+                borderColor: 'white'
+              },
+              ticks: {
+                    color: 'white'
+              },
+              title: {
+                display: true,
+                text: 'Доход (₽)',
+                color: 'white',
+                font: {
+                  size: 16,
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+      );
+    </script>
+    {% endif %}
+
+    <a href="{% url 'admin:index' %}" class="btn btn-primary admin-panel-button">Админ-панель</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
